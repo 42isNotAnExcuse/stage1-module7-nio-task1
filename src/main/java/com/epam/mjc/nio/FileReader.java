@@ -15,9 +15,6 @@ public class FileReader {
     public Profile getDataFromFile(File file) {
         List<String> rawFields = new ArrayList<>();
 
-
-        // OK - case 1 - NIO
-
         try(FileInputStream fis = new FileInputStream(file);
             FileChannel fc = fis.getChannel()) {
             ByteBuffer buff = ByteBuffer.allocate(1024);
@@ -29,31 +26,11 @@ public class FileReader {
             String rawResult = decoder.decode(buff).toString();
 
             for(String line : rawResult.split("\\r?\\n")) {
-                System.out.printf("res.....%s\n", line.split(" ")[1]);
                 rawFields.add(line.split(" ")[1]);
             }
         } catch(IOException ex) {
             ex.printStackTrace();
         }
-
-        // OK - case 1 - NIO-----END
-
-
-        // OK - case 1 - IO
-
-//        try (java.io.BufferedReader br = new java.io.BufferedReader(new java.io.FileReader(file))) {
-//            String res;
-//
-//            while ((res = br.readLine()) != null) {
-//                System.out.printf("res.....%s\n", res.split(" ")[1]);
-//                rawFields.add(res.split(" ")[1]);
-//            }
-//        } catch (IOException ex) {
-//            ex.printStackTrace();
-//        }
-
-        // OK - case 1 - IO-----END
-
 
         return new Profile(
                 rawFields.get(0),
